@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HOUSE OF ARTS - Digital Art Museum</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Cinzel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#800000',      /* Deep Maroon/Red */
+                            darkred: '#4A0000',  /* Dark Crimson */
+                            brightred: '#B22222',/* Firebrick Red */
+                            gold: '#FFD700',     /* Batik Yellow/Gold */
+                            golddark: '#DAA520', /* Dark Gold */
+                            cream: '#FFF8DC'     /* Soft Cream background */
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Yellow Batik Motif Overlay */
+        .bg-batik-pattern {
+            background-color: #5C0000;
+            background-image: radial-gradient(#FFD700 0.75px, transparent 0.75px), radial-gradient(#FFD700 0.75px, #5C0000 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.95;
+        }
+
+        .batik-border {
+            border-image: repeating-linear-gradient(45deg, #FFD700, #FFD700 10px, #800000 10px, #800000 20px) 20;
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #4A0000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-stone-900 text-stone-100 font-sans min-h-screen flex flex-col selection:bg-brand-gold selection:text-brand-darkred">
+
+    <!-- Header / Navbar Top -->
+    <header class="sticky top-0 z-50 bg-brand-darkred/95 backdrop-blur-md border-b-2 border-brand-gold shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo with Golden Emblem -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-12 h-12 rounded-full bg-brand-gold flex items-center justify-center text-brand-darkred text-2xl font-black shadow-lg border-2 border-amber-200 transform hover:scale-105 transition">
+                        <i class="fa-solid me-0.5 fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-cinzel text-xl sm:text-2xl font-bold tracking-wider text-brand-gold">THE HOUSE OF ARTS</h1>
+                        <p class="text-xs text-amber-200/80 font-mono tracking-widest uppercase">Museum Seni Digital TKJ</p>
+                    </div>
+                </div>
+
+                <!-- Global Quick Stats / User Badge Preview -->
+                <div class="hidden md:flex items-center space-x-4 bg-brand-red/60 px-4 py-2 rounded-full border border-brand-gold/40">
+                    <div class="flex items-center space-x-2 text-xs">
+                        <span class="text-stone-300">Status Account:</span>
+                        <span id="userStatusBadge" class="bg-amber-500/20 text-brand-gold border border-brand-gold px-2 py-0.5 rounded-full font-bold">Standard Student</span>
+                    </div>
+                    <div class="h-4 w-px bg-brand-gold/40"></div>
+                    <button onclick="switchTab('upgrade')" class="text-xs bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold px-3 py-1 rounded-full transition shadow">
+                        <i class="fa-solid fa-crown mr-1"></i> Upgrade
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-brand-gold p-2 rounded-md hover:bg-brand-red focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10 Navigation Buttons Bar (Desktop & Tablet) -->
+        <nav class="bg-brand-red border-t border-brand-gold/30 overflow-x-auto scrollbar-none">
+            <div class="max-w-7xl mx-auto px-2 flex justify-start md:justify-center space-x-1 sm:space-x-2 py-2 text-xs font-semibold whitespace-nowrap">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn active-tab px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-house text-brand-gold"></i> Home
+                </button>
+                <button onclick="switchTab('galeri')" id="nav-galeri" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-palette text-brand-gold"></i> Galeri
+                </button>
+                <button onclick="switchTab('favorit')" id="nav-favorit" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-star text-brand-gold"></i> Favorit (<span id="favCount">0</span>)
+                </button>
+                <button onclick="switchTab('sematan')" id="nav-sematan" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-thumbtack text-brand-gold"></i> Sematan (<span id="pinCount">0</span>)
+                </button>
+                <button onclick="switchTab('search')" id="nav-search" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-magnifying-glass text-brand-gold"></i> Searchbar
+                </button>
+                <button onclick="switchTab('subskripsi')" id="nav-subskripsi" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-gem text-brand-gold"></i> Subskripsi
+                </button>
+                <button onclick="switchTab('upgrade')" id="nav-upgrade" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-rocket text-brand-gold"></i> Upgrade User
+                </button>
+                <button onclick="switchTab('pengikut')" id="nav-pengikut" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-users text-brand-gold"></i> Pengikut (<span id="followersCount">1,248</span>)
+                </button>
+                <button onclick="switchTab('mengikuti')" id="nav-mengikuti" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-user-plus text-brand-gold"></i> Mengikuti (<span id="followingCount">42</span>)
+                </button>
+                <button onclick="switchTab('lencana')" id="nav-lencana" class="nav-btn px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-award text-brand-gold"></i> Lencana
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ==================== TAB 1: HOME ==================== -->
+        <section id="tab-home" class="tab-content space-y-12">
+            <!-- Hero Banner with Batik Motif -->
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-batik-pattern border-4 border-brand-gold p-8 sm:p-12 text-center text-white">
+                <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+                <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+                    <span class="inline-block bg-brand-gold text-brand-darkred font-bold px-4 py-1.5 rounded-full text-sm uppercase tracking-widest shadow-md">
+                        <i class="fa-solid fa-landmark mr-2"></i> Selamat Datang
+                    </span>
+                    <h2 class="font-cinzel text-3xl sm:text-5xl font-black text-brand-gold tracking-wide leading-tight">
+                        THE HOUSE OF ARTS
+                    </h2>
+                    <p class="text-stone-200 text-base sm:text-lg leading-relaxed font-light">
+                        Ruang Eksibisi Digital Masterpiece Seni Lukis, Ilustrasi & Grafis Nusantara dan Mancanegara dalam Balutan Motif Batik Merah Emas.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 pt-2">
+                        <button onclick="switchTab('galeri')" class="bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-images mr-2"></i> Jelajahi Galeri
+                        </button>
+                        <button onclick="switchTab('subskripsi')" class="bg-brand-darkred hover:bg-red-900 border-2 border-brand-gold text-brand-gold font-bold px-6 py-3 rounded-xl shadow-lg transition">
+                            <i class="fa-solid fa-crown mr-2"></i> Langganan Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sejarah Web / History Section -->
+            <div class="bg-brand-darkred/60 border border-brand-gold/30 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="flex items-center space-x-3 border-b border-brand-gold/30 pb-4 mb-6">
+                    <div class="p-3 bg-brand-gold text-brand-darkred rounded-xl">
+                        <i class="fa-solid fa-book-bookmark text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-cinzel text-2xl font-bold text-brand-gold">Sejarah The House of Arts</h3>
+                        <p class="text-xs text-stone-400">Kisah di Balik Pendirian Museum Virtual Seni Digital</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 text-stone-300 text-sm leading-relaxed">
+                    <p>
+                        <strong>THE HOUSE OF ARTS</strong> didirikan pada tahun 2026 oleh seorang siswa berbakat jurusan <em>Teknik Komputer dan Jaringan (TKJ)</em> di SMK. Berawal dari kecintaan terhadap seni rupa Indonesia dan dorongan untuk mengaplikasikan keahlian pemrograman jaringan web, museum virtual ini dirancang sebagai wadah modern untuk mengapresiasi mahakarya seniman lokal dan mancanegara.
+                    </p>
+                    <p>
+                        Penggunaan warna <strong>merah marun yang dominan</strong> melambangkan keberanian dan semangat berkarya, dipadukan dengan <strong>motif batik berwarna kuning emas</strong> sebagai penghormatan terhadap identitas warisan budaya Nusantara. Platform ini kini menghubungkan para kolektor, seniman digital, dan pecinta seni dalam satu ekosistem interaktif.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Featured Artworks Section (3 Gambar dari 3 Artis Berbeda) -->
+            <div class="space-y-6">
+                <div class="flex items-center justify-between border-l-4 border-brand-gold pl-4">
+                    <div>
+                        <h3 class="font-cinzel text-2xl font-bold text-brand-gold">Mahakarya Unggulan Minggu Ini</h3>
+                        <p class="text-xs text-stone-400">Tiga karya pilihan dari tiga seniman berbakat dunia</p>
+                    </div>
+                    <button onclick="switchTab('galeri')" class="text-brand-gold hover:underline text-sm font-semibold">
+                        Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Artwork 1 -->
+                    <div class="bg-brand-darkred/40 border border-brand-gold/30 rounded-2xl overflow-hidden hover:border-brand-gold transition duration-300 group shadow-lg">
+                        <div class="p-4 bg-brand-red/60 border-b border-brand-gold/20 flex justify-between items-center">
+                            <span class="font-cinzel font-bold text-brand-gold truncate">"the starry night"</span>
+                            <span class="text-xs bg-amber-500/20 text-brand-gold px-2 py-0.5 rounded border border-brand-gold/40">famous painting</span>
+                        </div>
+                        <div class="relative overflow-hidden h-64">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQABaPXncnmg8QnoDTBv5yO70EEl86JFynBS7i8SuXlfQ&s=10" alt="The starry night" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-4 flex items-center justify-between bg-stone-900/80">
+                            <div class="flex items-center space-x-2">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDE5ECj1-yocRhDEnrETIOuTkHt_h2DoZlnA1hD4Femw&s=10" class="w-8 h-8 rounded-full border border-brand-gold" alt="Raden Wijaya">
+                                <span class="text-xs font-semibold text-stone-200">Vincent Van Gogh</span>
+                            </div>
+                            <button onclick="toggleFavorite(0)" class="text-amber-400 hover:text-amber-300">
+                                <i class="fa-regular fa-star text-lg" id="star-home-0"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Artwork 2 -->
+                    <div class="bg-brand-darkred/40 border border-brand-gold/30 rounded-2xl overflow-hidden hover:border-brand-gold transition duration-300 group shadow-lg">
+                        <div class="p-4 bg-brand-red/60 border-b border-brand-gold/20 flex justify-between items-center">
+                            <span class="font-cinzel font-bold text-brand-gold truncate">"Mona Lisa"</span>
+                            <span class="text-xs bg-amber-500/20 text-brand-gold px-2 py-0.5 rounded border border-brand-gold/40">Artistic Masterpiece</span>
+                        </div>
+                        <div class="relative overflow-hidden h-64">
+                            <img src="https://media.timeout.com/images/103166731/1024/576/image.webp" alt="Mona Lisa" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-4 flex items-center justify-between bg-stone-900/80">
+                            <div class="flex items-center space-x-2">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTcNrKK4Zuin843U4pa8Nomr3lLDradf3k7jusQg-c6Q&s=10" class="w-8 h-8 rounded-full border border-brand-gold" alt="Siti Nurhaliza">
+                                <span class="text-xs font-semibold text-stone-200">Leonardo Da Vinci</span>
+                            </div>
+                            <button onclick="toggleFavorite(1)" class="text-amber-400 hover:text-amber-300">
+                                <i class="fa-regular fa-star text-lg" id="star-home-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Artwork 3 -->
+                    <div class="bg-brand-darkred/40 border border-brand-gold/30 rounded-2xl overflow-hidden hover:border-brand-gold transition duration-300 group shadow-lg">
+                        <div class="p-4 bg-brand-red/60 border-b border-brand-gold/20 flex justify-between items-center">
+                            <span class="font-cinzel font-bold text-brand-gold truncate">"Girl with a Pearl Earring"</span>
+                            <span class="text-xs bg-amber-500/20 text-brand-gold px-2 py-0.5 rounded border border-brand-gold/40">simple art</span>
+                        </div>
+                        <div class="relative overflow-hidden h-64">
+                            <img src="https://media.timeout.com/images/103166735/1024/576/image.webp" alt="girl with a pearl earring" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-4 flex items-center justify-between bg-stone-900/80">
+                            <div class="flex items-center space-x-2">
+                                <img src="data:image/jpeg;base64,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" class="w-8 h-8 rounded-full border border-brand-gold" alt="Ahmad Dhani">
+                                <span class="text-xs font-semibold text-stone-200">Johannes Vermeer</span>
+                            </div>
+                            <button onclick="toggleFavorite(2)" class="text-amber-400 hover:text-amber-300">
+                                <i class="fa-regular fa-star text-lg" id="star-home-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jasa Pembuatan Website (Fitur Layanan TKJ) -->
+            <div class="bg-gradient-to-r from-brand-darkred via-brand-red to-brand-darkred border-2 border-brand-gold rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                <div class="grid lg:grid-cols-3 gap-8 items-center">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="inline-flex items-center space-x-2 bg-brand-gold text-brand-darkred px-3 py-1 rounded-full text-xs font-bold uppercase">
+                            <i class="fa-solid fa-code"></i>
+                            <span>Layanan Pengembang Web SMK TKJ</span>
+                        </div>
+                        <h3 class="font-cinzel text-3xl font-bold text-brand-gold">Butuh Website Premium Seperti Ini?</h3>
+                        <p class="text-stone-200 text-sm leading-relaxed">
+                            Kami menyediakan **Jasa Pembuatan Website Professional** (Museum Virtual, Portfolio, E-Commerce, Landing Page, & Sistem Informasi Sekolah) dengan standar industri, desain modern, responsif, dan performa tinggi buatan anak bangsa jurusan TKJ.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                            <div class="bg-stone-900/60 p-3 rounded-xl border border-brand-gold/30">
+                                <i class="fa-solid fa-bolt text-brand-gold text-lg mb-1"></i>
+                                <h4 class="text-xs font-bold text-white">Super Cepat</h4>
+                                <p class="text-[11px] text-stone-400">Optimasi & Loading Kilat</p>
+                            </div>
+                            <div class="bg-stone-900/60 p-3 rounded-xl border border-brand-gold/30">
+                                <i class="fa-solid fa-mobile-screen text-brand-gold text-lg mb-1"></i>
+                                <h4 class="text-xs font-bold text-white">Full Responsif</h4>
+                                <p class="text-[11px] text-stone-400">Tampil Pas di HP & Laptop</p>
+                            </div>
+                            <div class="bg-stone-900/60 p-3 rounded-xl border border-brand-gold/30">
+                                <i class="fa-solid fa-shield-halved text-brand-gold text-lg mb-1"></i>
+                                <h4 class="text-xs font-bold text-white">Aman & Terjamin</h4>
+                                <p class="text-[11px] text-stone-400">Standar Keamanan Jaringan TKJ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kontak, E-Mail, dan Lokasi Jasa Pembuatan Web -->
+                    <div class="bg-stone-900/90 p-6 rounded-2xl border border-brand-gold space-y-4">
+                        <h4 class="font-cinzel text-lg font-bold text-brand-gold text-center border-b border-brand-gold/30 pb-2">Hubungi Tim Pengembang</h4>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div class="flex items-start space-x-3">
+                                <div class="p-2 bg-brand-red rounded-lg text-brand-gold">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-stone-400 font-medium">Kontak WhatsApp/Telepon</p>
+                                    <p class="text-stone-100 font-bold text-sm">+62 812-3456-7890</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3">
+                                <div class="p-2 bg-brand-red rounded-lg text-brand-gold">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-stone-400 font-medium">E-Mail Resmi Jasa</p>
+                                    <p class="text-stone-100 font-bold text-sm">tkj.houseofarts@smk.sch.id</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3">
+                                <div class="p-2 bg-brand-red rounded-lg text-brand-gold">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p class="text-stone-400 font-medium">Lokasi Lab / Studio</p>
+                                    <p class="text-stone-100 font-bold text-sm">Lab Komputer & Jaringan TKJ, Gedung Utama Lt. 2, Serang - Banten, Indonesia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="showModal('Konsultasi Jasa Web', 'Silahkan hubungi kami melalui WhatsApp +62 812-3456-7890 untuk konsultasi gratis rancangan website impian Anda!')" class="w-full bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold py-2.5 rounded-xl transition shadow">
+                            <i class="fa-brands fa-whatsapp text-lg mr-1"></i> Hubungi Jasa Web
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 2: GALERI ==================== -->
+        <section id="tab-galeri" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-brand-darkred/40 p-4 rounded-2xl border border-brand-gold/30">
+                <div>
+                    <h2 class="font-cinzel text-2xl font-bold text-brand-gold">Galeri Koleksi Mahakarya</h2>
+                    <p class="text-xs text-stone-400">Jelajahi karya lukisan dan grafis dari berbagai seniman maestro</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-stone-300">Filter Genre:</span>
+                    <select id="galleryFilter" onchange="filterGalleryCategory()" class="bg-stone-900 text-brand-gold border border-brand-gold/40 text-xs rounded-lg px-3 py-1.5 focus:outline-none">
+                        <option value="all">Semua Kategori</option>
+                        <option value="Klasik">Klasik / Traditional</option>
+                        <option value="Digital">Digital Art</option>
+                        <option value="Batik">Motif & Batik</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid Galeri -->
+            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Content Populated by JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 3: FAVORIT ==================== -->
+        <section id="tab-favorit" class="tab-content hidden space-y-6">
+            <div class="bg-brand-darkred/40 p-6 rounded-2xl border border-brand-gold/30">
+                <h2 class="font-cinzel text-2xl font-bold text-brand-gold flex items-center gap-2">
+                    <i class="fa-solid fa-star text-amber-400"></i> Gambar Favorit Saya
+                </h2>
+                <p class="text-xs text-stone-400 mt-1">
+                    Koleksi gambar yang telah Anda tandai sebagai favorit. Setiap gambar favorit ditandai ikon bintang di corner kanan bawah.
+                </p>
+            </div>
+
+            <div id="favoritesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Favorites Cards Populated by JS -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 4: SEMATAN (PINNED) ==================== -->
+        <section id="tab-sematan" class="tab-content hidden space-y-6">
+            <div class="bg-brand-darkred/40 p-6 rounded-2xl border border-brand-gold/30">
+                <h2 class="font-cinzel text-2xl font-bold text-brand-gold flex items-center gap-2">
+                    <i class="fa-solid fa-thumbtack text-amber-400"></i> Pengguna & Artis Disematkan (Pinned)
+                </h2>
+                <p class="text-xs text-stone-400 mt-1">
+                    Daftar profil seniman yang disematkan ke halaman utama Anda. Ditandai dengan jarum pentul (pin) di pojok kanan bawah foto profil.
+                </p>
+            </div>
+
+            <div id="pinnedUsersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Pinned Users Cards Populated by JS -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 5: SEARCHBAR ==================== -->
+        <section id="tab-search" class="tab-content hidden space-y-8">
+            <div class="max-w-2xl mx-auto text-center space-y-4">
+                <h2 class="font-cinzel text-3xl font-bold text-brand-gold">Pencarian Mahakarya & Seniman</h2>
+                <p class="text-xs text-stone-400">Ketik kata kunci nama lukisan, jenis karya, atau nama artis kesayangan Anda.</p>
+                
+                <!-- Search Box Controls -->
+                <div class="relative flex items-center">
+                    <input type="text" id="searchInput" onkeyup="performSearch()" placeholder="Cari karya lukisan atau nama seniman..." class="w-full bg-stone-900 border-2 border-brand-gold rounded-full py-3.5 pl-5 pr-14 text-sm text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-brand-gold shadow-xl">
+                    <button onclick="performSearch()" class="absolute right-2 bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold p-2.5 rounded-full transition">
+                        <i class="fa-solid fa-magnifying-glass text-lg px-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="searchResultsSection" class="space-y-4">
+                <h3 class="text-sm font-bold text-brand-gold border-b border-brand-gold/30 pb-2">Hasil Pencarian:</h3>
+                <div id="searchResultsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Search Results -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 6: SUBSKRIPSI ==================== -->
+        <section id="tab-subskripsi" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-brand-gold/20 text-brand-gold px-3 py-1 rounded-full text-xs font-bold border border-brand-gold/40 uppercase">Paket Keanggotaan</span>
+                <h2 class="font-cinzel text-3xl font-bold text-brand-gold">Opsi Subskripsi Museum</h2>
+                <p class="text-xs text-stone-400">Pilih paket akses eksklusif untuk menikmati keindahan galeri secara tak terbatas.</p>
+            </div>
+
+            <!-- 3 Pricing Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Opsi 1 -->
+                <div class="bg-brand-darkred/40 border border-brand-gold/30 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-gold transition duration-300 relative shadow-xl">
+                    <div class="space-y-4">
+                        <div class="p-3 bg-brand-red/80 w-fit rounded-xl border border-brand-gold/30">
+                            <i class="fa-solid fa-eye text-brand-gold text-2xl"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-bold text-white">Opsi 1: Basic Premium</h3>
+                        <div class="text-3xl font-black text-brand-gold">
+                            Rp 22.000 <span class="text-xs font-normal text-stone-400">/ bulan</span>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-stone-300 pt-2 border-t border-brand-gold/20">
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Membuka Akses Premium Museum
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Melihat gambar versi resolusi tinggi (Premium)
+                            </li>
+                            <li class="flex items-center gap-2 text-stone-500">
+                                <i class="fa-solid fa-circle-xmark text-rose-500"></i> Fitur Bebas Iklan
+                            </li>
+                            <li class="flex items-center gap-2 text-stone-500">
+                                <i class="fa-solid fa-circle-xmark text-rose-500"></i> Diskon Pembelian Lencana
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="subscribeTier('Opsi 1: Basic Premium', 'Rp 22.000')" class="mt-6 w-full bg-brand-red hover:bg-brand-brightred border border-brand-gold/50 text-brand-gold font-bold py-3 rounded-xl transition">
+                        Pilih Opsi 1
+                    </button>
+                </div>
+
+                <!-- Opsi 2 (Popular) -->
+                <div class="bg-gradient-to-b from-brand-red/90 to-brand-darkred border-2 border-brand-gold rounded-3xl p-6 flex flex-col justify-between relative shadow-2xl transform md:-translate-y-2">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-gold text-brand-darkred px-4 py-0.5 rounded-full text-xs font-black uppercase tracking-wider shadow">
+                        Paling Populer
+                    </div>
+                    <div class="space-y-4 pt-2">
+                        <div class="p-3 bg-brand-gold text-brand-darkred w-fit rounded-xl">
+                            <i class="fa-solid fa-shield-cat text-2xl"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-bold text-brand-gold">Opsi 2: Pro Collector</h3>
+                        <div class="text-3xl font-black text-white">
+                            Rp 56.000 <span class="text-xs font-normal text-stone-300">/ bulan</span>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-stone-200 pt-2 border-t border-brand-gold/30">
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Membuka Akses Premium Museum
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Melihat gambar versi resolusi ultra HD
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Pengalaman Anti Iklan (No Ads)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Membeli Lencana dengan **Diskon 40%**
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="subscribeTier('Opsi 2: Pro Collector', 'Rp 56.000')" class="mt-6 w-full bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold py-3 rounded-xl transition shadow-lg">
+                        Pilih Opsi 2
+                    </button>
+                </div>
+
+                <!-- Opsi 3 (Master Maestro) -->
+                <div class="bg-brand-darkred/40 border border-brand-gold/30 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-gold transition duration-300 relative shadow-xl">
+                    <div class="space-y-4">
+                        <div class="p-3 bg-brand-red/80 w-fit rounded-xl border border-brand-gold/30">
+                            <i class="fa-solid fa-sack-dollar text-brand-gold text-2xl"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-bold text-white">Opsi 3: Maestro Monetize</h3>
+                        <div class="text-3xl font-black text-brand-gold">
+                            Rp 125.000 <span class="text-xs font-normal text-stone-400">/ bulan</span>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-stone-300 pt-2 border-t border-brand-gold/20">
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Semua Fitur Opsi 1 & 2
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Pengalaman Anti Iklan (No Ads)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Membeli Lencana dengan **Diskon 60%**
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> Kesempatan Bekerja Sama dengan Artis
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i> **Gambar bisa menghasilkan uang** (Tergantung jumlah viewer)
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="subscribeTier('Opsi 3: Maestro Monetize', 'Rp 125.000')" class="mt-6 w-full bg-brand-red hover:bg-brand-brightred border border-brand-gold/50 text-brand-gold font-bold py-3 rounded-xl transition">
+                        Pilih Opsi 3
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 7: UPGRADE USER ==================== -->
+        <section id="tab-upgrade" class="tab-content hidden space-y-8">
+            <div class="max-w-3xl mx-auto bg-gradient-to-br from-brand-darkred via-stone-900 to-brand-darkred border-2 border-brand-gold rounded-3xl p-8 shadow-2xl text-center space-y-6">
+                <div class="w-20 h-20 bg-brand-gold text-brand-darkred rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h2 class="font-cinzel text-3xl font-black text-brand-gold">Upgrade User ke Level PRO</h2>
+                <p class="text-stone-300 text-sm max-w-xl mx-auto">
+                    Tingkatkan akun Anda dari Pengunjung Biasa menjadi **PRO Curator / PRO Artist** seumur hidup dengan keandalan fitur tak terbatas.
+                </p>
+
+                <div class="bg-stone-900/80 p-6 rounded-2xl border border-brand-gold/30 text-left max-w-lg mx-auto space-y-3 text-xs">
+                    <div class="flex items-center justify-between border-b border-stone-800 pb-2">
+                        <span class="text-stone-400">Biaya Upgrade Permanen:</span>
+                        <span class="text-xl font-bold text-brand-gold">Rp 223.000</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-stone-200">
+                        <i class="fa-solid fa-check text-amber-400"></i> Lencana "PRO Curator" Emas Permanen
+                    </div>
+                    <div class="flex items-center gap-2 text-stone-200">
+                        <i class="fa-solid fa-check text-amber-400"></i> Bebas Upload Karya Tanpa Batas Kuota
+                    </div>
+                    <div class="flex items-center gap-2 text-stone-200">
+                        <i class="fa-solid fa-check text-amber-400"></i> Dapatkan Verifikasi Centang Emas Resmi
+                    </div>
+                    <div class="flex items-center gap-2 text-stone-200">
+                        <i class="fa-solid fa-check text-amber-400"></i> Fitur Kirim Pesan Langsung ke Seniman
+                    </div>
+                </div>
+
+                <button onclick="processUserUpgrade()" class="bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold px-8 py-3.5 rounded-xl shadow-xl transition transform hover:scale-105">
+                    <i class="fa-solid fa-bolt mr-2"></i> Upgrade Sekarang (Rp 223.000)
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 8: PENGIKUT ==================== -->
+        <section id="tab-pengikut" class="tab-content hidden space-y-6">
+            <div class="bg-brand-darkred/40 p-6 rounded-2xl border border-brand-gold/30 flex justify-between items-center">
+                <div>
+                    <h2 class="font-cinzel text-2xl font-bold text-brand-gold">Daftar Pengikut (Followers)</h2>
+                    <p class="text-xs text-stone-400">Pengguna dan pengagum seni yang mengikuti aktivitas galeri Anda.</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-stone-400">Total Pengikut:</span>
+                    <p class="text-2xl font-black text-brand-gold">1,248</p>
+                </div>
+            </div>
+
+            <div id="followersList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Followers items -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 9: MENGIKUTI ==================== -->
+        <section id="tab-mengikuti" class="tab-content hidden space-y-6">
+            <div class="bg-brand-darkred/40 p-6 rounded-2xl border border-brand-gold/30 flex justify-between items-center">
+                <div>
+                    <h2 class="font-cinzel text-2xl font-bold text-brand-gold">Daftar Mengikuti (Following)</h2>
+                    <p class="text-xs text-stone-400">Seniman dan kreator pilihan yang Anda ikuti.</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-stone-400">Total Mengikuti:</span>
+                    <p class="text-2xl font-black text-brand-gold">42</p>
+                </div>
+            </div>
+
+            <div id="followingList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Following items -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 10: LENCANA PENGGUNA ==================== -->
+        <section id="tab-lencana" class="tab-content hidden space-y-6">
+            <div class="bg-brand-darkred/40 p-6 rounded-2xl border border-brand-gold/30">
+                <h2 class="font-cinzel text-2xl font-bold text-brand-gold">Koleksi Lencana Pengguna</h2>
+                <p class="text-xs text-stone-400">Pencapaian, apresiasi, dan lencana kehormatan akun Anda di The House of Arts.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Badge 1 -->
+                <div class="bg-stone-900 p-5 rounded-2xl border-2 border-brand-gold text-center space-y-3 relative overflow-hidden shadow-lg">
+                    <div class="w-16 h-16 bg-brand-gold/20 text-brand-gold rounded-full flex items-center justify-center text-3xl mx-auto border border-brand-gold">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-brand-gold">TKJ Web Pioneer</h3>
+                    <p class="text-[11px] text-stone-400">Pengembang awal platform museum digital buatan SMK TKJ.</p>
+                    <span class="inline-block bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Terbuka</span>
+                </div>
+
+                <!-- Badge 2 -->
+                <div class="bg-stone-900 p-5 rounded-2xl border border-brand-gold/40 text-center space-y-3 relative overflow-hidden shadow-lg">
+                    <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-3xl mx-auto border border-amber-400">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-amber-400">Kurator Batik Emas</h3>
+                    <p class="text-[11px] text-stone-400">Apresiasi khusus pelestari nilai estetika batik dalam seni modern.</p>
+                    <span class="inline-block bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Terbuka</span>
+                </div>
+
+                <!-- Badge 3 -->
+                <div class="bg-stone-900 p-5 rounded-2xl border border-stone-800 text-center space-y-3 relative overflow-hidden opacity-75 hover:opacity-100 transition">
+                    <div class="w-16 h-16 bg-stone-800 text-stone-500 rounded-full flex items-center justify-center text-3xl mx-auto border border-stone-700">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-stone-300">Maestro Subskriber</h3>
+                    <p class="text-[11px] text-stone-400">Lencana langganan Opsi 3 untuk monetisasi karya.</p>
+                    <span class="inline-block bg-stone-800 text-stone-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Terkunci</span>
+                </div>
+
+                <!-- Badge 4 -->
+                <div class="bg-stone-900 p-5 rounded-2xl border border-stone-800 text-center space-y-3 relative overflow-hidden opacity-75 hover:opacity-100 transition">
+                    <div class="w-16 h-16 bg-stone-800 text-stone-500 rounded-full flex items-center justify-center text-3xl mx-auto border border-stone-700">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-stone-300">Star Collector</h3>
+                    <p class="text-[11px] text-stone-400">Diberikan setelah menandai 10 karya favorit.</p>
+                    <span class="inline-block bg-stone-800 text-stone-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Terkunci</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-darkred border-t-2 border-brand-gold mt-16 text-stone-300 text-xs py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex justify-center items-center space-x-2">
+                <div class="w-6 h-6 rounded-full bg-brand-gold text-brand-darkred flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <span class="font-cinzel text-brand-gold font-bold text-sm">THE HOUSE OF ARTS</span>
+            </div>
+            <p class="text-stone-400 max-w-xl mx-auto">
+                Website Resmi Museum Virtual Seni Lukis Digital & Layanan Pembuatan Web Professional Karya Siswa SMK Jurusan TKJ.
+            </p>
+            <p class="text-stone-500 font-mono text-[11px]">
+                &copy; 2026 THE HOUSE OF ARTS - TKJ Studio. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal Popup Notice -->
+    <div id="customModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brand-darkred border-2 border-brand-gold rounded-2xl max-w-md w-full p-6 space-y-4 text-center shadow-2xl relative">
+            <h3 id="modalTitle" class="font-cinzel text-xl font-bold text-brand-gold">Notifikasi</h3>
+            <p id="modalBody" class="text-xs text-stone-200 leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full bg-brand-gold hover:bg-yellow-400 text-brand-darkred font-bold py-2 rounded-xl transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Data Mockup Galeri Artwork
+        const galleryData = [
+            {
+                id: 0,
+                title: "The starry night",
+                artist: "Vincent Van Gogh",
+                category: "FAMOUS PAINTING",
+                artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDE5ECj1-yocRhDEnrETIOuTkHt_h2DoZlnA1hD4Femw&s=10",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQABaPXncnmg8QnoDTBv5yO70EEl86JFynBS7i8SuXlfQ&s=10",
+                isFav: false,
+                isPinned: true
+            },
+            {
+                id: 1,
+                title: "Mona Lisa",
+                artist: "Leonardo Da Vinci",
+                category: "ARTISTIC MASTERPIECE",
+                artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTcNrKK4Zuin843U4pa8Nomr3lLDradf3k7jusQg-c6Q&s=10",
+                img: "https://media.timeout.com/images/103166731/1024/576/image.webp",
+                isFav: true,
+                isPinned: true
+            },
+            {
+                id: 2,
+                title: "Girl with a Pearl Earring",
+                artist: "Johannes Vermeer",
+                category: "SIMPLE ART",
+                artistImg: "data:image/jpeg;base64,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",
+                img: "https://media.timeout.com/images/103166735/1024/576/image.webp",
+                isFav: false,
+                isPinned: false
+            },
+            {
+                id: 3,
+                title: "The Garden of Earthly Delights",
+                artist: "Hieronymus Bosch",
+                category: "ARTISTIC MASTERPIECE",
+                artistImg: "data:image/jpeg;base64,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",
+                img: "https://media.timeout.com/images/103166747/1024/576/image.webp",
+                isFav: true,
+                isPinned: true
+            },
+            {
+                id: 4,
+                title: "A Sunday Afternoon on the Island of La Grande Jatte",
+                artist: "Georges Seurat",
+                category: "SIMPLE ART",
+                artistImg: "data:image/webp;base64,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",
+                img: "https://media.timeout.com/images/105293264/1024/576/image.webp",
+                isFav: false,
+                isPinned: false
+            },
+            {
+                id: 5,
+                title: "freeBSD",
+                artist: "CHATENZO BOMBER",
+                category: "SIMPLE ART",
+                artistImg: "file:///C:/Users/USER/Downloads/SHIROBON.png",
+                img: "file:///C:/Users/USER/Downloads/freeBSD%20logo.png",
+                isFav: false,
+                isPinned: false
+            }
+        ];
+
+        // Mockup Followers & Following
+        const followersData = [
+            { name: "Mghty Jetters", avatar: "data:image/jpeg;base64,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", role: "Art Enthusiast" },
+            { name: "Leafy Leafster", avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVrvFCIqnx40rNuWFhrcoLlvjwRvDw6vmCJfv88lM9Bg&s", role: "Digital Painter" },
+            { name: "Fourry The Four", avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0qqqKLvEgIl4EYNQTrJE6OOntHI9tHpUTpPGAxTmnpQ&s=10", role: "Museum Visitor" },
+            { name: "The Prettiest Bomber", avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMm26uygkPJcwTjEmCFLKfG3fcdKdyxFS1VqcJ53H66Z6GEU62HghMlVc&s=10", role: "Bomberman participant" },
+            { name: "pinky pinkers", avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ZPIyaEj9JAexctXUUOgC0_M0LdSXaJYyeaxIXEzpDQ&s=10", role: "Collector" },
+            { name: "cutie valentine", avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJyVlmVZz0L52kCf1WjozH7r39Ejp_CaFRCh_k3AyrVg&s=10", role: "Illustrator" }
+        ];
+
+        // Initialize Page
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGallery(galleryData);
+            renderFavorites();
+            renderPinnedUsers();
+            renderFollowersAndFollowing();
+            updateCounts();
+        });
+
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('bg-brand-gold', 'text-brand-darkred', 'font-bold');
+                btn.classList.add('text-stone-200');
+            });
+
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-gold', 'text-brand-darkred', 'font-bold');
+                activeBtn.classList.remove('text-stone-200');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Gallery Cards
+        function renderGallery(items) {
+            const container = document.getElementById('galleryGrid');
+            container.innerHTML = '';
+
+            items.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "bg-brand-darkred/40 border border-brand-gold/30 rounded-2xl overflow-hidden hover:border-brand-gold transition duration-300 shadow-xl flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <!-- Title ABOVE Image (Sesuai Permintaan) -->
+                        <div class="p-4 bg-brand-red/80 border-b border-brand-gold/20 flex justify-between items-center">
+                            <h4 class="font-cinzel font-bold text-brand-gold text-base truncate">${item.title}</h4>
+                            <span class="text-[10px] bg-stone-900 text-brand-gold border border-brand-gold/40 px-2 py-0.5 rounded-full font-semibold">${item.category}</span>
+                        </div>
+
+                        <!-- Image Container with Bottom Right Favorite Badge -->
+                        <div class="relative overflow-hidden h-60 bg-stone-950">
+                            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                            
+                            <!-- Star Badge di Pojok Kanan Bawah Gambar (Sesuai Permintaan) -->
+                            <button onclick="toggleFavorite(${item.id})" class="absolute bottom-3 right-3 w-10 h-10 rounded-full ${item.isFav ? 'bg-amber-400 text-brand-darkred' : 'bg-stone-900/80 text-stone-300 hover:text-amber-400'} flex items-center justify-center border-2 border-brand-gold shadow-lg transition">
+                                <i class="fa-solid fa-star text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Footer Details: Artis & Pin Status -->
+                    <div class="p-4 bg-stone-900/90 flex items-center justify-between border-t border-brand-gold/20">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="relative">
+                                <img src="${item.artistImg}" class="w-9 h-9 rounded-full border border-brand-gold object-cover" alt="${item.artist}">
+                                <!-- Pin Icon Badge di Pojok Kanan Bawah Foto Profil (Sesuai Permintaan) -->
+                                ${item.isPinned ? `<div class="absolute -bottom-1 -right-1 bg-rose-600 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] border border-stone-900"><i class="fa-solid fa-thumbtack"></i></div>` : ''}
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-stone-100">${item.artist}</p>
+                                <p class="text-[10px] text-stone-400">Seniman Terverifikasi</p>
+                            </div>
+                        </div>
+
+                        <button onclick="togglePinArtist(${item.id})" class="text-xs px-2.5 py-1 rounded-lg ${item.isPinned ? 'bg-rose-900/60 text-rose-300 border border-rose-500' : 'bg-stone-800 text-stone-300 hover:text-brand-gold'} transition">
+                            <i class="fa-solid fa-thumbtack mr-1"></i> ${item.isPinned ? 'Disematkan' : 'Sematkan'}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Toggle Favorite Status
+        function toggleFavorite(id) {
+            const item = galleryData.find(g => g.id === id);
+            if (item) {
+                item.isFav = !item.isFav;
+                renderGallery(galleryData);
+                renderFavorites();
+                updateCounts();
+                
+                // Sync home stars if present
+                const homeStar = document.getElementById(`star-home-${id}`);
+                if (homeStar) {
+                    homeStar.className = item.isFav ? 'fa-solid fa-star text-amber-400' : 'fa-regular fa-star';
+                }
+
+                showToast(item.isFav ? `"${item.title}" ditambahkan ke Favorit!` : `"${item.title}" dihapus dari Favorit.`);
+            }
+        }
+
+        // Toggle Pin Artist Status
+        function togglePinArtist(id) {
+            const item = galleryData.find(g => g.id === id);
+            if (item) {
+                item.isPinned = !item.isPinned;
+                renderGallery(galleryData);
+                renderPinnedUsers();
+                updateCounts();
+                showToast(item.isPinned ? `${item.artist} disematkan ke daftar utama!` : `${item.artist} dilepas dari sematan.`);
+            }
+        }
+
+        // Render Favorites Tab
+        function renderFavorites() {
+            const favs = galleryData.filter(g => g.isFav);
+            const container = document.getElementById('favoritesGrid');
+            container.innerHTML = '';
+
+            if (favs.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 text-stone-500 text-sm">Belum ada gambar favorit. Klik icon bintang pada gambar di Galeri!</div>`;
+                return;
+            }
+
+            favs.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-brand-darkred/40 border border-brand-gold/30 rounded-2xl overflow-hidden shadow-xl";
+                card.innerHTML = `
+                    <div class="p-3 bg-brand-red/80 border-b border-brand-gold/20 flex justify-between items-center">
+                        <h4 class="font-cinzel font-bold text-brand-gold text-sm truncate">${item.title}</h4>
+                    </div>
+                    <div class="relative h-56">
+                        <img src="${item.img}" class="w-full h-full object-cover">
+                        <!-- Tanda Bintang di Pojok Kanan Bawah -->
+                        <div class="absolute bottom-3 right-3 bg-amber-400 text-brand-darkred w-8 h-8 rounded-full flex items-center justify-center border border-brand-gold shadow">
+                            <i class="fa-solid fa-star text-sm"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Pinned Users Tab
+        function renderPinnedUsers() {
+            const pinned = galleryData.filter(g => g.isPinned);
+            const container = document.getElementById('pinnedUsersGrid');
+            container.innerHTML = '';
+
+            if (pinned.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 text-stone-500 text-sm">Belum ada profil seniman yang disematkan.</div>`;
+                return;
+            }
+
+            pinned.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-stone-900/90 border border-brand-gold/40 rounded-2xl p-4 flex items-center space-x-4 shadow-lg";
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${item.artistImg}" class="w-14 h-14 rounded-full border-2 border-brand-gold object-cover shadow">
+                        <!-- Foto Profil dengan Tanda Jarum Pentul (Pin) di Pojok Kanan Bawah (Sesuai Permintaan) -->
+                        <div class="absolute bottom-0 right-0 bg-rose-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs border border-stone-900 shadow">
+                            <i class="fa-solid fa-thumbtack"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-sm text-stone-100">${item.artist}</h4>
+                        <p class="text-[11px] text-brand-gold">Karya: "${item.title}"</p>
+                        <span class="inline-block mt-1 bg-amber-500/20 text-brand-gold text-[10px] px-2 py-0.5 rounded border border-brand-gold/30">Pengguna Disematkan</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Followers and Following
+        function renderFollowersAndFollowing() {
+            const fContainer = document.getElementById('followersList');
+            const folContainer = document.getElementById('followingList');
+            
+            fContainer.innerHTML = '';
+            folContainer.innerHTML = '';
+
+            followersData.forEach(user => {
+                fContainer.innerHTML += `
+                    <div class="bg-stone-900 p-3 rounded-xl border border-brand-gold/20 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="${user.avatar}" class="w-10 h-10 rounded-full border border-brand-gold">
+                            <div>
+                                <h5 class="text-xs font-bold text-white">${user.name}</h5>
+                                <p class="text-[10px] text-stone-400">${user.role}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] bg-brand-red text-brand-gold px-2 py-1 rounded">Pengikut</span>
+                    </div>
+                `;
+            });
+
+            galleryData.forEach(item => {
+                folContainer.innerHTML += `
+                    <div class="bg-stone-900 p-3 rounded-xl border border-brand-gold/20 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.artistImg}" class="w-10 h-10 rounded-full border border-brand-gold">
+                            <div>
+                                <h5 class="text-xs font-bold text-white">${item.artist}</h5>
+                                <p class="text-[10px] text-brand-gold">Seniman Maestro</p>
+                            </div>
+                        </div>
+                        <button onclick="showToast('Anda mengikuti ${item.artist}')" class="text-[10px] bg-brand-gold text-brand-darkred font-bold px-2.5 py-1 rounded">Mengikuti</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Search Bar Functionality
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const results = galleryData.filter(g => 
+                g.title.toLowerCase().includes(query) || 
+                g.artist.toLowerCase().includes(query) ||
+                g.category.toLowerCase().includes(query)
+            );
+
+            const container = document.getElementById('searchResultsGrid');
+            container.innerHTML = '';
+
+            if (results.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-stone-500 text-xs">Tidak ada hasil ditemukan untuk "${query}".</div>`;
+                return;
+            }
+
+            results.forEach(item => {
+                container.innerHTML += `
+                    <div class="bg-stone-900 p-4 rounded-xl border border-brand-gold/30 flex items-center space-x-4">
+                        <img src="${item.img}" class="w-16 h-16 object-cover rounded-lg border border-brand-gold">
+                        <div>
+                            <h4 class="font-bold text-xs text-brand-gold">${item.title}</h4>
+                            <p class="text-[11px] text-stone-300">Oleh: ${item.artist}</p>
+                            <span class="text-[10px] text-amber-400 font-mono">${item.category}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Filter Gallery by Category
+        function filterGalleryCategory() {
+            const val = document.getElementById('galleryFilter').value;
+            if (val === 'all') {
+                renderGallery(galleryData);
+            } else {
+                const filtered = galleryData.filter(g => g.category === val);
+                renderGallery(filtered);
+            }
+        }
+
+        // Update Counts on Nav Bar
+        function updateCounts() {
+            document.getElementById('favCount').innerText = galleryData.filter(g => g.isFav).length;
+            document.getElementById('pinCount').innerText = galleryData.filter(g => g.isPinned).length;
+        }
+
+        // Subscription Tier Handler
+        function subscribeTier(tierName, price) {
+            showModal(`Subskripsi ${tierName}`, `Terima kasih! Anda memilih ${tierName} seharga ${price}/bulan. Lanjutkan pembayaran via Transfer Bank / QRIS.`);
+        }
+
+        // User Upgrade Handler
+        function processUserUpgrade() {
+            document.getElementById('userStatusBadge').innerText = "PRO Curator";
+            document.getElementById('userStatusBadge').className = "bg-brand-gold text-brand-darkred border border-amber-200 px-2 py-0.5 rounded-full font-black shadow";
+            showModal("Upgrade Berhasil!", "Selamat! Akun Anda telah resmi diupgrade menjadi PRO Curator seharga Rp 223.000 (Seumur Hidup).");
+        }
+
+        // Modal Helpers
+        function showModal(title, text) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        // Simple Toast Alert
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-brand-gold text-brand-darkred font-bold px-4 py-2.5 rounded-xl border border-amber-200 shadow-2xl z-50 text-xs animate-bounce";
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+    </script>
+</body>
+</html>
